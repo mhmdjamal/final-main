@@ -1,0 +1,202 @@
+<div style="display: flex; justify-content: center" *ngIf="loading">
+  <mat-spinner diameter="20" color="primary"></mat-spinner>
+</div>
+<div class="card mx-5 my-3 p-2">
+  <div *ngIf="!loading">
+    <div class="row">
+      <div class="col">
+        <mat-form-field appearance="outline">
+          <mat-label>Search</mat-label>
+          <input
+            matInput
+            (keyup)="applyFilter($event)"
+            placeholder="Ex. Mia"
+            #input
+          />
+          <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
+      </div>
+      <div class="col align-end">
+        <button
+          mat-raised-button
+          color="primary"
+          class="btn-action"
+          (click)="onAddClicked()"
+          *ngIf="userData.role === 'admin'"
+        >
+          Add Startup
+        </button>
+        <button
+          mat-raised-button
+          color="primary"
+          class="btn-action"
+          (click)="onRequestNewStartup()"
+          *ngIf="userData.role === 'enduser'"
+        >
+          Request New Startup
+        </button>
+      </div>
+    </div>
+    <mat-tab-group>
+      <mat-tab label="Published Startups">
+        <table mat-table [dataSource]="dataSource">
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef>Name</th>
+            <td mat-cell *matCellDef="let row">{{ row.name }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="emailAddress">
+            <th mat-header-cell *matHeaderCellDef>Email Address</th>
+            <td mat-cell *matCellDef="let row">{{ row.emailAddress }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="sectors">
+            <th mat-header-cell *matHeaderCellDef>Sectors</th>
+            <td mat-cell *matCellDef="let row">
+              <div *ngFor="let item of row.sectors">
+                {{ item }}
+              </div>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="city">
+            <th mat-header-cell *matHeaderCellDef>City</th>
+            <td mat-cell *matCellDef="let row">{{ row.city }}</td>
+          </ng-container>
+
+          <ng-container
+            matColumnDef="actions"
+            *ngIf="userData.role === 'admin'"
+          >
+            <th mat-header-cell *matHeaderCellDef>Action</th>
+            <td mat-cell *matCellDef="let row">
+              <div class="row" style="width:7.5rem; gap:1rem">
+                <button
+                  class="col btn btn-warning"
+                  (click)="onEditClicked(row)"
+                  matTooltip="Edit"
+                  matTooltipPosition="below"
+                >
+                  <mat-icon>edit</mat-icon>
+                </button>
+
+                <button
+                  class="col btn btn-danger"
+                  (click)="onDeleteClicked(row)"
+                  matTooltip="Delete"
+                  matTooltipPosition="below"
+                >
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </div>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="view" *ngIf="userData.role === 'admin'">
+            <th mat-header-cell *matHeaderCellDef>Preview</th>
+            <td mat-cell *matCellDef="let row">
+              <i
+                class="hover"
+                (click)="onRowClicked(row)"
+                matTooltip="Preview"
+                matTooltipPosition="below"
+              >
+                <mat-icon>remove_red_eye</mat-icon>
+              </i>
+            </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+          <!-- Row shown when there is no matching data. -->
+          <tr class="mat-row" *matNoDataRow>
+            <td class="mat-cell" colspan="4">
+              No data matching the filter "{{ input.value }}"
+            </td>
+          </tr>
+        </table>
+      </mat-tab>
+      <mat-tab label="Requested Startups" *ngIf="userData.role === 'admin'">
+        <table mat-table [dataSource]="dataSource2">
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef>Name</th>
+            <td mat-cell *matCellDef="let row">{{ row.name }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="emailAddress">
+            <th mat-header-cell *matHeaderCellDef>Email Address</th>
+            <td mat-cell *matCellDef="let row">{{ row.emailAddress }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="sectors">
+            <th mat-header-cell *matHeaderCellDef>Sectors</th>
+            <td mat-cell *matCellDef="let row">
+              <div *ngFor="let item of row.sectors">
+                {{ item }}
+              </div>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="city">
+            <th mat-header-cell *matHeaderCellDef>City</th>
+            <td mat-cell *matCellDef="let row">{{ row.city }}</td>
+          </ng-container>
+
+          <ng-container
+            matColumnDef="actions"
+            *ngIf="userData.role === 'admin'"
+          >
+            <th mat-header-cell *matHeaderCellDef>Action</th>
+            <td mat-cell *matCellDef="let row">
+              <div class="row" style="width:7.5rem; gap:1rem">
+                <button
+                  class="col btn btn-warning"
+                  (click)="onApprovedClicked(row)"
+                  matTooltip="Accept"
+                  matTooltipPosition="below"
+                >
+                  <mat-icon>check</mat-icon>
+                </button>
+
+                <button
+                  class="col btn btn-danger"
+                  (click)="onRejectedClicked(row)"
+                  matTooltip="Reject"
+                  matTooltipPosition="below"
+                >
+                  <mat-icon>close</mat-icon>
+                </button>
+              </div>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="view" *ngIf="userData.role === 'admin'">
+            <th mat-header-cell *matHeaderCellDef>Preview</th>
+            <td mat-cell *matCellDef="let row">
+              <i
+                class="hover"
+                (click)="onRowClicked(row)"
+                matTooltip="Preview"
+                matTooltipPosition="below"
+              >
+                <mat-icon>remove_red_eye</mat-icon>
+              </i>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+          <!-- Row shown when there is no matching data. -->
+          <tr class="mat-row" *matNoDataRow>
+            <td class="mat-cell" colspan="4">
+              No data matching the filter "{{ input.value }}"
+            </td>
+          </tr>
+        </table>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+  <mat-paginator
+    [pageSizeOptions]="[5, 10, 25, 100]"
+    aria-label="Select page of users"
+  ></mat-paginator>
+</div>

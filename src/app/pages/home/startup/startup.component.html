@@ -1,0 +1,57 @@
+<div class="m-0 container-fluid" style="padding-bottom: 2rem;">
+  <div class="row" style="gap:0.5em;">
+    <div class="card col-md-4" style="width: 29rem;" *ngFor="let card of data">
+      <div class="card-header">
+        <img
+          class="card-img-top"
+          style="height: 20rem;"
+          src="{{ card.logo }}"
+          alt="Card image cap"
+        />
+      </div>
+
+      <div class="card-body">
+        <h5 class="card-title">{{ card.name }}</h5>
+        <p class="card-text">
+          {{ card?.description.slice(0, 40) }}
+        </p>
+      </div>
+      <div class="card-footer row">
+        <button class="btn btn-warning" (click)="onRowClicked(card)">
+          Preview
+        </button>
+        <share-buttons
+          theme="circles-dark"
+          [include]="[
+            'copy',
+            'facebook',
+            'email',
+            'messenger',
+            'mix',
+            'line',
+            'linkedin',
+            'pinterest',
+            'print',
+            'reddit',
+            'sms',
+            'telegram',
+            'tumblr',
+            'twitter',
+            'viber',
+            'vk',
+            'xing',
+            'whatsapp'
+          ]"
+          [showIcon]="true"
+          [showText]="false"
+          url="http://localhost:4200/startup/preview-startup?key={{ card.key }}"
+          description="Fresh Spot ... POWERFUL, NOT OVERPOWERING"
+          twitterAccount="elonmusk"
+          class="pt-5"
+          [show]="3"
+        >
+        </share-buttons>
+      </div>
+    </div>
+  </div>
+</div>

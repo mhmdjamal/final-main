@@ -1,0 +1,103 @@
+<div class="card mx-4 my-2 p-2">
+  <form [formGroup]="formGroup">
+    <div style="width: 100%;" class="row">
+      <!-- <label for="formFile" class="form-label">Upload Image</label> -->
+      <input
+        class="form-control col"
+        type="file"
+        id="formFile"
+        (change)="onFileInputChange($event)"
+        accept="image/*"
+      />
+    </div>
+    <img
+      [src]="imgSrc"
+      alt=""
+      *ngIf="formGroup.controls['logo'].value"
+      class="width:2.5rem; height:2.5rem"
+    />
+    <mat-form-field appearance="outline">
+      <mat-label>Name</mat-label>
+      <input matInput placeholder="Name" formControlName="name" />
+      <mat-error *ngIf="formGroup.get('name')?.invalid">{{
+        getErrorMessage(formGroup.get("name"))
+      }}</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Sectors</mat-label>
+      <mat-select multiple formControlName="sectors">
+        <mat-option *ngFor="let sector of sectors" [value]="sector?.name">{{
+          sector?.name
+        }}</mat-option>
+      </mat-select>
+      <mat-error *ngIf="formGroup.get('sectors')?.invalid">{{
+        getErrorMessage(formGroup.get("sectors"))
+      }}</mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Website Url</mat-label>
+      <input matInput placeholder="Website Url" formControlName="websiteUrl" />
+      <mat-error *ngIf="formGroup.get('websiteUrl')?.invalid">{{
+        getErrorMessage(formGroup.get("websiteUrl"))
+      }}</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Email Address</mat-label>
+      <input
+        matInput
+        placeholder="Email Address"
+        formControlName="emailAddress"
+      />
+      <mat-error *ngIf="formGroup.get('emailAddress')?.invalid">{{
+        getErrorMessage(formGroup.get("emailAddress"))
+      }}</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>City</mat-label>
+      <mat-select formControlName="city">
+        <mat-option *ngFor="let city of jordanCities" [value]="city?.city">{{
+          city?.city
+        }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Number Of Employees</mat-label>
+      <input
+        matInput
+        placeholder="Number Of Employees"
+        type="number"
+        formControlName="numberOfEmployees"
+      />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Year Of Establish</mat-label>
+      <input
+        matInput
+        placeholder="Year Of Establish"
+        formControlName="yearOfEstablish"
+      />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Description</mat-label>
+      <textarea
+        matInput
+        placeholder="Description"
+        formControlName="description"
+      ></textarea>
+    </mat-form-field>
+    <button
+      mat-raised-button
+      color="primary"
+      style="width: auto;"
+      (click)="onAddClicked()"
+    >
+      Add Startup
+    </button>
+  </form>
+</div>

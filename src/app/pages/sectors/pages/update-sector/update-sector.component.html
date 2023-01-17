@@ -1,0 +1,58 @@
+<div class="card mx-4 my-2 p-2">
+  <form [formGroup]="formGroup">
+    <div style="width: 100%;" class="row">
+      <!-- <label for="formFile" class="form-label">Upload Image</label> -->
+      <input
+        class="form-control col"
+        type="file"
+        id="formFile"
+        (change)="onFileInputChange($event)"
+        accept="image/*"
+      />
+    </div>
+    <img
+      [src]="imgSrc"
+      alt=""
+      *ngIf="formGroup.controls['logo'].value"
+      class="width:2.5rem; height:2.5rem"
+    />
+    <mat-form-field appearance="outline">
+      <mat-label>Name</mat-label>
+      <input matInput placeholder="Name" formControlName="name" />
+      <mat-error *ngIf="formGroup.get('name')?.invalid">{{
+        getErrorMessage(formGroup.get("name"))
+      }}</mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label for="exampleColorInput" class="form-label">Color</mat-label>
+      <input
+        type="color"
+        class="form-control form-control-color"
+        value="#ffb535"
+        title="Choose your color"
+        matInput
+        formControlName="color"
+      />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Category Name</mat-label>
+      <input
+        matInput
+        placeholder="Category Name"
+        type="text"
+        formControlName="categoryName"
+      />
+    </mat-form-field>
+
+    <button
+      mat-raised-button
+      color="primary"
+      style="width: auto;"
+      (click)="onUpdateClicked()"
+    >
+      Add Sector
+    </button>
+  </form>
+</div>

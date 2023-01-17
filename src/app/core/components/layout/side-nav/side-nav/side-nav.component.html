@@ -1,0 +1,134 @@
+<mat-sidenav-container>
+  <mat-sidenav #snav>
+    <div style="display: flex; justify-content: center" *ngIf="loading">
+      <mat-spinner diameter="20" color="primary"></mat-spinner>
+    </div>
+
+    <mat-list *ngIf="!loading">
+      <div
+        style="display: flex; justify-content: center; align-items: center; flex-direction: column;"
+      >
+        <img
+          class="avatar mat-elevation-z8"
+          src="../../../../../../assets/userImg.svg"
+        />
+
+        <h4 class="name">{{ userData.name }}</h4>
+        <p class="designation">{{ userData.email }}</p>
+      </div>
+      <mat-divider></mat-divider>
+      <div *ngFor="let item of navMenu.children">
+        <div *ngIf="item.children.length > 0; else hasNoChildren">
+          <mat-list-item
+            *ngIf="item.role === userData.role || item.role.length === 0"
+          >
+            <mat-icon matListItemIcon>
+              {{ item.icon }}
+            </mat-icon>
+            <div matListItemTitle class="item-text">
+              {{ item.displayName }}
+            </div>
+          </mat-list-item>
+          <div *ngFor="let childOfItem of item.children">
+            <a
+              [routerLink]="[childOfItem.route]"
+              *ngIf="
+                childOfItem.role === userData.role ||
+                childOfItem.role.length === 0
+              "
+            >
+              <mat-list-item>
+                <mat-icon matListItemIcon>
+                  {{ childOfItem.icon }}
+                </mat-icon>
+                <div matListItemTitle class="item-text">
+                  {{ childOfItem.displayName }}
+                </div>
+              </mat-list-item>
+            </a>
+          </div>
+        </div>
+
+        <ng-template #hasNoChildren>
+          <a
+            [routerLink]="[item.route]"
+            *ngIf="item.role === userData.role || item.role.length === 0"
+          >
+            <mat-list-item>
+              <mat-icon matListItemIcon>
+                {{ item.icon }}
+              </mat-icon>
+              <div matListItemTitle class="item-text">
+                {{ item.displayName }}
+              </div>
+            </mat-list-item>
+          </a>
+        </ng-template>
+      </div>
+    </mat-list>
+    <mat-divider></mat-divider>
+
+    <button mat-button (click)="onLoggedoutClicked()">
+      <mat-icon>logout</mat-icon>
+      <div>
+        Logout
+      </div>
+    </button>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-toolbar
+      *ngIf="router.url !== '/auth/login' && router.url !== '/auth/signup'"
+    >
+      <div style="display: flex; justify-content: center; align-items: center;">
+        <button mat-icon-button (click)="snav.toggle()" *ngIf="isLoggedIn">
+          <mat-icon style="color: white;"> menu</mat-icon>
+        </button>
+        <a href="/">
+          <img
+            style="width:8rem; cursor: pointer;"
+            src="../../../../../../assets/Akatsuki-Logo-PNG-Pic.png"
+            href="/"
+          />
+        </a>
+      </div>
+
+      <div style="display: flex; gap:1rem; color:rgb(231, 9, 9);" *ngIf="!isLoggedIn">
+        <button
+          type="button"
+          class="btn"
+          (click)="OnLoginClick()"
+          style="color: rgb(231, 9, 9); display: flex; justify-content: center; align-items: center;"
+        >
+          <mat-icon style="margin-bottom: 0.625rem;">login</mat-icon>
+          <p>Login</p>
+        </button>
+        <button
+          (click)="onSignupClicked()"
+          type="button"
+          class="btn"
+          style="color:rgb(231, 9, 9); display: flex; justify-content: center; align-items: center;"
+        >
+          <mat-icon style="margin-bottom: 0.625rem;">person</mat-icon>
+          <p>Sing Up</p>
+        </button>
+      </div>
+      <button
+        *ngIf="isLoggedIn"
+        class="btn"
+        type="button"
+        (click)="onLoggedoutClicked()"
+        style="color: white; display: flex; justify-content: center; align-items: center;"
+      >
+        <mat-icon style="margin-bottom: 0.625rem;">logout</mat-icon>
+        <p>
+          Logout
+        </p>
+      </button>
+    </mat-toolbar>
+
+    <router-outlet></router-outlet>
+    <app-footer
+      *ngIf="router.url !== '/auth/login' && router.url !== '/auth/signup'"
+    ></app-footer>
+  </mat-sidenav-content>
+</mat-sidenav-container>

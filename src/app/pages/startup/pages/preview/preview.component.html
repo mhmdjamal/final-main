@@ -1,0 +1,76 @@
+<div class="content-wrapper container-xxl p-0" id="detailsApp">
+  <div class=" backdrop" v-if="ui.isLoading">
+    <div class="lds-ring">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+  </div>
+  <div class="d-flex flex-column align-items-center " style="height:100%">
+    <div class="col-md-7">
+      <img
+        id="profile-picture"
+        *ngIf="imgUrl && imgUrl.length > 0"
+        [src]="imgUrl"
+        style="width:100%; height:fit-content"
+      />
+      <img
+        style="width:100%;height:fit-content"
+        id="profile-picture"
+        *ngIf="imgUrl && imgUrl.length < 0"
+        src="https://www.paulhypepage.my/wp-content/uploads/2021/07/Setting-Up-a-Sdn-Bhd-Company-in-Malaysia.svg"
+      />
+    </div>
+    <div class="col-md-8">
+      <div style="color:#da7422" class="font-weight-bold h1 p-2 pb-0">
+        {{ startup.name }}
+      </div>
+      <div style="display: flex;align-items: center;">
+        <span class="p-1 pb-0">
+          <a
+            [href]="startup.websiteUrl"
+            style=" color:#30362f"
+            id="profile-first-number"
+          >
+            <mat-icon style="height: 19px; ">website</mat-icon>
+            {{ startup.websiteUrl }}</a
+          >
+        </span>
+        <span class="p-1 pb-0">
+          <mat-icon style="height: 19px; ">alternate_email</mat-icon>
+
+          <span style=" color:#30362f" id="profile-first-number">
+            {{ startup.emailAddress }}
+          </span>
+        </span>
+        <span class="p-1 pb-0">
+          <mat-icon style="height: 19px; ">person_pin</mat-icon>
+
+          <span style=" color:#30362f" id="profile-first-number">
+            {{ startup.numberOfEmployees }}
+          </span>
+        </span>
+        <span class="p-1 pb-0">
+          <mat-icon style="height: 19px; ">calendar_today</mat-icon>
+
+          <span style=" color:#30362f" id="profile-first-number">
+            {{ startup.yearOfEstablish }}</span
+          >
+        </span>
+      </div>
+      <span>
+        <span style=" color:#30362f" id="profile-first-number">
+          <ul>
+            <li *ngFor="let sector of startup.sectors">{{ sector }}</li>
+          </ul>
+        </span>
+      </span>
+      <div class="col">
+        <div class="mb-3 p-2 pt-1">
+          <div>{{ startup.description }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
